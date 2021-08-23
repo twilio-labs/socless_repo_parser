@@ -1,0 +1,1271 @@
+{
+    "integrations": [
+        {
+            "meta": {
+                "repo_url": "",
+                "integration_family": "socless"
+            },
+            "functions": [
+                {
+                    "meta": {
+                        "lambda_folder_name": "_merge_parallel_output",
+                        "deployed_lambda_name": "_socless_merge_parallel_output",
+                        "serverless_lambda_name": "MergeParallelOutput",
+                        "supported_in_playbook": false
+                    },
+                    "resource_type": "socless_task",
+                    "description": "",
+                    "arguments": [],
+                    "supports_kwargs": false,
+                    "return_statements": []
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "_save_msg_resp_token",
+                        "deployed_lambda_name": "_socless_save_msg_resp_token",
+                        "serverless_lambda_name": "SaveMessageResponseToken",
+                        "supported_in_playbook": false
+                    },
+                    "resource_type": "socless_task",
+                    "description": "",
+                    "arguments": [],
+                    "supports_kwargs": false,
+                    "return_statements": []
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "_setup_global_state_for_direct_invoked_playbook",
+                        "deployed_lambda_name": "_socless_setup_global_state_for_direct_invoked_playbook",
+                        "serverless_lambda_name": "SetupGlobalStateForDirectInvokedPlaybook",
+                        "supported_in_playbook": false
+                    },
+                    "resource_type": "socless_task",
+                    "description": "",
+                    "arguments": [],
+                    "supports_kwargs": false,
+                    "return_statements": []
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "_ship_playbook_logs",
+                        "deployed_lambda_name": "_socless_ship_playbook_logs",
+                        "serverless_lambda_name": "SavePlaybookExecutionLogs",
+                        "supported_in_playbook": false
+                    },
+                    "resource_type": "socless_task",
+                    "description": "",
+                    "arguments": [],
+                    "supports_kwargs": false,
+                    "return_statements": []
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "add_custom_mapping",
+                        "deployed_lambda_name": "socless_add_custom_mapping",
+                        "serverless_lambda_name": "AddCustomMapping",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Add a key-value pair to the Socless custom mapping table",
+                    "arguments": [
+                        {
+                            "name": "key",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "value",
+                            "data_type": "any",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": []
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "aws_request",
+                        "deployed_lambda_name": "socless_aws_request",
+                        "serverless_lambda_name": "AWSRequest",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "The AWS Request integration enables users call any AWS API.",
+                    "arguments": [
+                        {
+                            "name": "service_name",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "operation",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "The boto3 client operation you want to perform, e.g put_object",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "operation_parameters",
+                            "data_type": "object",
+                            "required": true,
+                            "description": "Parameters for the operation. Required but can be empty dict for operations that don't take parameters",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "assume_role_config",
+                            "data_type": "object",
+                            "required": true,
+                            "description": "Configuration for the role to assume to perform the operation. See https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sts.html#STS.Client.assume_role\nfor a full list of values. Common values include `RoleArn`, `RoleSessionName` and `ExternalId`",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "disable_pagination",
+                            "data_type": "boolean",
+                            "required": false,
+                            "description": "Set to true to disable pagination",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": false
+                        },
+                        {
+                            "name": "save_to_vault",
+                            "data_type": "boolean",
+                            "required": false,
+                            "description": "Determines if to save the results to the SOCless vault if the results are too large for step functions",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": false
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": []
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "cache_results",
+                        "deployed_lambda_name": "socless_cache_results",
+                        "serverless_lambda_name": "CacheResults",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "This integration helps to cache, return and (optionally) re-map fields of data so that it can be used by other States. Choice states particularly benefit from this integration as",
+                    "arguments": [
+                        {
+                            "name": "execution_context",
+                            "data_type": "null",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "entries",
+                            "data_type": "any",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "cached": "entries"
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "counter",
+                        "deployed_lambda_name": "_socless_counter",
+                        "serverless_lambda_name": "Counter",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Simple Counter",
+                    "arguments": [
+                        {
+                            "name": "context",
+                            "data_type": "null",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": true,
+                            "default_value": null
+                        },
+                        {
+                            "name": "state_name",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "start",
+                            "data_type": "number",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "delta",
+                            "data_type": "number",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "direction",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "up",
+                            "internal": false,
+                            "default_value": "up"
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "status": "Error",
+                            "message": "Unsupported direction supplied to counter"
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "create_events",
+                        "deployed_lambda_name": "socless_create_events",
+                        "serverless_lambda_name": "CreateEvents",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Creates a new event in Socless using the socless_create_events api from the socless_python library",
+                    "arguments": [
+                        {
+                            "name": "event_context",
+                            "data_type": "null",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": true,
+                            "default_value": null
+                        },
+                        {
+                            "name": "event_type",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "Human Readable Event name e.g 'Investigate Login'",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "details",
+                            "data_type": "array<object>",
+                            "required": true,
+                            "description": "List of dictionaries containing the event details",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "playbook",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "The name of the playbook to execute",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "dedup_keys",
+                            "data_type": "array<>",
+                            "required": false,
+                            "description": "The keys to use to deduplicate the event",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": []
+                        },
+                        {
+                            "name": "data_types",
+                            "data_type": "object",
+                            "required": false,
+                            "description": "A mapping of what datatypes are contained in the event details",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": {}
+                        },
+                        {
+                            "name": "add_to_details",
+                            "data_type": "object",
+                            "required": false,
+                            "description": "A dictionary containing additional keys to add to each details dict",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": {}
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "completed": true
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "http_request",
+                        "deployed_lambda_name": "socless_http_request",
+                        "serverless_lambda_name": "HTTPRequest",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Make any HTTP request using the requests library.",
+                    "arguments": [
+                        {
+                            "name": "method",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "url",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "raise_for_status",
+                            "data_type": "boolean",
+                            "required": false,
+                            "description": "",
+                            "placeholder": true,
+                            "internal": false,
+                            "default_value": true
+                        },
+                        {
+                            "name": "return_headers",
+                            "data_type": "boolean",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": false
+                        },
+                        {
+                            "name": "auth",
+                            "data_type": "array<>",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": []
+                        }
+                    ],
+                    "supports_kwargs": true,
+                    "return_statements": []
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "playground",
+                        "deployed_lambda_name": "_socless_playground",
+                        "serverless_lambda_name": "Playground",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "This function is useful for testing things, feel free to modify",
+                    "arguments": [
+                        {
+                            "name": "input",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "output": "input"
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "query_custom_mapping",
+                        "deployed_lambda_name": "socless_query_custom_mapping",
+                        "serverless_lambda_name": "QueryCustomMapping",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Get a value from the Socless Custom Mappings Table.",
+                    "arguments": [
+                        {
+                            "name": "key",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "exists": true,
+                            "mapping": "item"
+                        },
+                        {
+                            "exists": false,
+                            "mapping": {}
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "set_investigation_status",
+                        "deployed_lambda_name": "socless_set_investigation_status",
+                        "serverless_lambda_name": "SetInvestigationStatus",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Set the Investigation ID to status.",
+                    "arguments": [
+                        {
+                            "name": "investigation_id",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "status",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "result": "failure",
+                            "message": "No investigation_id provided"
+                        },
+                        {
+                            "result": "failure",
+                            "message": ""
+                        },
+                        {
+                            "result": "failure",
+                            "message": ""
+                        },
+                        {
+                            "result": "success"
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "socless_log_findings",
+                        "deployed_lambda_name": "socless_log_findings",
+                        "serverless_lambda_name": "SoclessLogFindings",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Create a log file and upload it to SOCless logging bucket.",
+                    "arguments": [
+                        {
+                            "name": "context",
+                            "data_type": "object",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": true,
+                            "default_value": null
+                        },
+                        {
+                            "name": "investigation_escalated",
+                            "data_type": "boolean",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "findings",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "metadata",
+                            "data_type": "object",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": {}
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": []
+                }
+            ]
+        },
+        {
+            "meta": {
+                "repo_url": "",
+                "integration_family": "socless-slack"
+            },
+            "functions": [
+                {
+                    "meta": {
+                        "lambda_folder_name": "_slack_endpoint",
+                        "deployed_lambda_name": "_socless_slack_endpoint",
+                        "serverless_lambda_name": "SlackEndpoint",
+                        "supported_in_playbook": false
+                    },
+                    "resource_type": "socless_task",
+                    "description": "",
+                    "arguments": [],
+                    "supports_kwargs": false,
+                    "return_statements": []
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "_update_cached_users",
+                        "deployed_lambda_name": "socless_slack_update_cached_users",
+                        "serverless_lambda_name": "UpdateCachedUsers",
+                        "supported_in_playbook": false
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Update the dynamoDB table with slack user's usernames and slack_ids",
+                    "arguments": [
+                        {
+                            "name": "slack_profile_key",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "name in user profile to use for cache mapping",
+                            "placeholder": "display_name",
+                            "internal": false,
+                            "default_value": "display_name"
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "finished": true
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "check_user_in_channel",
+                        "deployed_lambda_name": "socless_slack_check_user_in_channel",
+                        "serverless_lambda_name": "CheckIfUserInChannel",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Check if user is in a particular slack channel.",
+                    "arguments": [
+                        {
+                            "name": "user_id",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "user id of the user invoking the slash command",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "target_channel_id",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "the channel id to be checked if user is in",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "you can pass an alternate token via Jinja template in playbook.json (ssm, environment, etc)",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "ok": true
+                        },
+                        {
+                            "ok": false
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "create_channel",
+                        "deployed_lambda_name": "socless_slack_create_channel",
+                        "serverless_lambda_name": "CreateChannel",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Create slack channel and invite any provided slack_ids.",
+                    "arguments": [
+                        {
+                            "name": "channel_name",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "user_ids",
+                            "data_type": "array<string>",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": []
+                        },
+                        {
+                            "name": "is_private",
+                            "data_type": "boolean",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": false
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "ok": true,
+                            "created_channel_id": "created_channel_id",
+                            "channel_name": "channel_name",
+                            "added_users": "user_ids"
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "find_user",
+                        "deployed_lambda_name": "socless_slack_find_user",
+                        "serverless_lambda_name": "FindUser",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Get a slack user's profile from their username or slack_id.",
+                    "arguments": [
+                        {
+                            "name": "username",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "slack_id",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "exclude_bots",
+                            "data_type": "boolean",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": false
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "result": "false"
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "invite_to_channel",
+                        "deployed_lambda_name": "socless_slack_invite_to_channel",
+                        "serverless_lambda_name": "InviteToChannel",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Add users to a channel. Requires a Slack User Token (Token_Type: xoxp)",
+                    "arguments": [
+                        {
+                            "name": "channel_id",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "user_id",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "user_ids",
+                            "data_type": "array<string>",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": []
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "ok": true,
+                            "user_ids": "user_ids"
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "list_channels",
+                        "deployed_lambda_name": "socless_slack_list_channels",
+                        "serverless_lambda_name": "ListChannels",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Returns a list of all available channels in the workspace.",
+                    "arguments": [
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "channels": "response"
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "prompt_for_confirmation",
+                        "deployed_lambda_name": "_socless_slack_prompt_for_confirmation",
+                        "serverless_lambda_name": "PromptForConfirmation",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_interaction",
+                    "description": "Send a Slack Message and store the message id for the message.",
+                    "arguments": [
+                        {
+                            "name": "context",
+                            "data_type": "null",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": true,
+                            "default_value": null
+                        },
+                        {
+                            "name": "target_type",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "target",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "text",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "receiver",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": true,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "prompt_text",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "yes_text",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "Yes",
+                            "internal": false,
+                            "default_value": "Yes"
+                        },
+                        {
+                            "name": "no_text",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "No",
+                            "internal": false,
+                            "default_value": "No"
+                        },
+                        {
+                            "name": "as_user",
+                            "data_type": "boolean",
+                            "required": false,
+                            "description": "",
+                            "placeholder": true,
+                            "internal": false,
+                            "default_value": true
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "response": "resp",
+                            "message_id": "message_id",
+                            "slack_id": ""
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "prompt_for_response",
+                        "deployed_lambda_name": "_socless_slack_prompt_for_response",
+                        "serverless_lambda_name": "PromptForResponse",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_interaction",
+                    "description": "Send a Slack Message and store the message id for the message.",
+                    "arguments": [
+                        {
+                            "name": "context",
+                            "data_type": "null",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": true,
+                            "default_value": null
+                        },
+                        {
+                            "name": "target",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "target_type",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "message_template",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "receiver",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": true,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "response_desc",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "[response]",
+                            "internal": false,
+                            "default_value": "[response]"
+                        },
+                        {
+                            "name": "as_user",
+                            "data_type": "boolean",
+                            "required": false,
+                            "description": "",
+                            "placeholder": true,
+                            "internal": false,
+                            "default_value": true
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "response": "resp",
+                            "message_id": "message_id",
+                            "slack_id": ""
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "send_dialog",
+                        "deployed_lambda_name": "_socless_slack_send_dialog",
+                        "serverless_lambda_name": "SendDialog",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_interaction",
+                    "description": "Send a dialog into Slack",
+                    "arguments": [
+                        {
+                            "name": "context",
+                            "data_type": "null",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": true,
+                            "default_value": null
+                        },
+                        {
+                            "name": "trigger_id",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "title",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "elements",
+                            "data_type": "array<>",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "receiver",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": true,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "submit_label",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "Submit",
+                            "internal": false,
+                            "default_value": "Submit"
+                        },
+                        {
+                            "name": "state",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "n/a",
+                            "internal": false,
+                            "default_value": "n/a"
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "response": "json_resp",
+                            "message_id": "message_id"
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "send_message",
+                        "deployed_lambda_name": "socless_slack_send_message",
+                        "serverless_lambda_name": "SendMessage",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Send a Slack message without expecting a response.",
+                    "arguments": [
+                        {
+                            "name": "context",
+                            "data_type": "null",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": true,
+                            "default_value": null
+                        },
+                        {
+                            "name": "message_template",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "target",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "target_type",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "as_user",
+                            "data_type": "boolean",
+                            "required": false,
+                            "description": "",
+                            "placeholder": true,
+                            "internal": false,
+                            "default_value": true
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "response": "resp",
+                            "slack_id": ""
+                        }
+                    ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "set_channel_topic",
+                        "deployed_lambda_name": "socless_slack_set_channel_topic",
+                        "serverless_lambda_name": "SetChannelTopic",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Set topic for a channel.",
+                    "arguments": [
+                        {
+                            "name": "channel_id",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "topic",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": [
+                        {
+                            "ok": true,
+                            "topic": "topic"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
