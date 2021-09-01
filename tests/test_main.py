@@ -1,11 +1,11 @@
 import pytest
 from typing import List
-from src.models import (
+from socless_repo_parser.models import (
     AllIntegrations,
     RepoNameInfo,
     build_integration_classes_from_json,
 )
-from src.main import build_socless_info, parse_repo_names
+from socless_repo_parser.main import build_socless_info, parse_repo_names
 import json
 
 

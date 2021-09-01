@@ -1,7 +1,7 @@
 import ast
 from typing import ByteString, Dict, List, Union
-from src.constants import HANDLE_STATE_FN_NAME, INTERNAL_ARG_NAMES
-from src.models import (
+from socless_repo_parser.constants import HANDLE_STATE_FN_NAME, INTERNAL_ARG_NAMES
+from socless_repo_parser.models import (
     JsonDataType,
     SoclessFunction,
     SoclessFunctionArgument,

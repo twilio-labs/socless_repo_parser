@@ -6,21 +6,25 @@ Take a list of socless repo names and query the github api for their raw lambda 
 By default, output is saved to `./socless_info.json`
 
 ### For open source:
-```bash
+```sh
 python3 main.py "socless, socless-slack" --org-name="<your_github_organization_or_twilio-labs>"
 ```
 
 ### For Github Enterprise:
 First set environment variables for your Github Enterprise Domain and a Personal Access Token
-```bash
+```sh
 export GHE_DOMAIN=<Your_GHE_Domain.com>
 export GHE_TOKEN=<Personal_Access_Token>
 ```
 Then run this script with flag `--ghe=True`
-```bash
+```sh
 python3 main.py "socless, socless-slack" --org-name="<github_organization>" --ghe=True
 ```
+### For open source and enterprise in the same command, or different orgs:
 
+```sh
+python3 main.py "https://www.github.com/twilio-labs/socless-slack, https://www.<my_enterprise_domain>/<my_org>/socless" --ghe=True
+```
 
 
 ## Example of scraper output

@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from pydantic import BaseModel
 from github.Repository import Repository
 from github.ContentFile import ContentFile
-from src.constants import INTERACTION_ARG_NAMES
+from socless_repo_parser.constants import INTERACTION_ARG_NAMES
 import docstring_parser
 
 

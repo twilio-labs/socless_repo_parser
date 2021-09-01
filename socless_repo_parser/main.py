@@ -1,13 +1,13 @@
 import json, os
 from typing import List, Union
-from src.parse_python import build_parsed_function
-from src.parse_yml import parse_yml
-from src.github import (
+from socless_repo_parser.parse_python import build_parsed_function
+from socless_repo_parser.parse_yml import parse_yml
+from socless_repo_parser.github import (
     get_lambda_folders_data,
     fetch_raw_function,
     fetch_raw_serverless_yml,
 )
-from src.models import AllIntegrations, IntegrationFamily, RepoNameInfo
+from socless_repo_parser.models import AllIntegrations, IntegrationFamily, RepoNameInfo
 from urllib.parse import urlparse
 
 

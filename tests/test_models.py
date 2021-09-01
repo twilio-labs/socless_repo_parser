@@ -1,4 +1,4 @@
-from src.models import build_integration_classes_from_json
+from socless_repo_parser.models import build_integration_classes_from_json
 
 
 # def test_generate_jsonschema():

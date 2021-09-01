@@ -1,6 +1,10 @@
 import ast
-from src.models import JsonDataType, SoclessFunction, SoclessFunctionArgument
-from src.parse_python import (
+from socless_repo_parser.models import (
+    JsonDataType,
+    SoclessFunction,
+    SoclessFunctionArgument,
+)
+from socless_repo_parser.parse_python import (
     get_function_args_info,
     socless_lambda_file_parser,
 )

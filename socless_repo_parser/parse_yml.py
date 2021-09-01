@@ -1,7 +1,7 @@
 from ruamel.yaml import YAML
 from pydantic import BaseModel
 from typing import Dict
-from src.models import SoclessFunctionMeta
+from socless_repo_parser.models import SoclessFunctionMeta
 
 yaml = YAML(typ="safe")
 
