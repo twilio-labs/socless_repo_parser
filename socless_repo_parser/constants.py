@@ -7,3 +7,4 @@ SOCLESS_PYTHON_PIP_PATTERN = r"(.+socless_python.git)(@[.\d]+#)(egg=socless)"
 HANDLE_STATE_FN_NAME = "handle_state"
 INTERACTION_ARG_NAMES = ["receiver"]
 INTERNAL_ARG_NAMES = ["context", "receiver", "event_context"]
+GHE_DOMAIN = "GHE_DOMAIN"

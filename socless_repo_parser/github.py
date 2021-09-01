@@ -1,4 +1,5 @@
 from typing import ByteString
+from socless_repo_parser.constants import GHE_DOMAIN
 import requests, os, time
 
 
@@ -20,7 +21,7 @@ def build_serverless_yml_url(
 ):
 
     if ghe:
-        domain = os.getenv("GHE_DOMAIN", "api.github.com")
+        domain = os.getenv(GHE_DOMAIN, "api.github.com")
         base_url = f"https://{domain}/api/v3"
 
         file_meta_url = f"{base_url}/repos/{org_name}/{repo_name}/contents/serverless.yml?ref=master"
@@ -45,7 +46,7 @@ def fetch_raw_serverless_yml(
 
 def get_lambda_folders_data(repo_name, org_name="twilio-labs", ghe=False):
     if ghe:
-        domain = os.getenv("GHE_DOMAIN", "api.github.com")
+        domain = os.getenv(GHE_DOMAIN, "api.github.com")
         base_url = f"https://{domain}/api/v3"
     else:
         base_url = "https://api.github.com"

@@ -1,4 +1,5 @@
 import json, os
+from socless_repo_parser.constants import GHE_DOMAIN
 from typing import List, Union
 from socless_repo_parser.parse_python import build_parsed_function
 from socless_repo_parser.parse_yml import parse_yml
@@ -12,7 +13,7 @@ from urllib.parse import urlparse
 
 
 def parse_repo_names(
-    cli_repo_input: Union[List, str], default_org=""
+    cli_repo_input: Union[List, str], default_org="", ghe=False
 ) -> List[RepoNameInfo]:
     """Parse CLI string into a list of repo names and orgs. If no org is supplied, use the default org.
 
@@ -29,11 +30,20 @@ def parse_repo_names(
     for repo in repos:
         parsed = urlparse(repo)
         repo_path = parsed.path
+
         # if supplied with a full url, path will have a leading /
         repo_path = repo_path[1:] if repo_path.startswith("/") else repo_path
         repo_path = repo_path.split("/")
+
         if len(repo_path) < 2:
-            repo_name_info = RepoNameInfo(name=repo_path[0], org=default_org, url=repo)
+            # no full url supplied. build url from context
+            if ghe:
+                domain = os.getenv(GHE_DOMAIN, "<no_enterprise_domain>")
+            else:
+                domain = "github.com"
+            name = repo_path[0]
+            url = f"https://{domain}/{default_org}/{name}"
+            repo_name_info = RepoNameInfo(name=name, org=default_org, url=url)
         else:
             repo_name_info = RepoNameInfo(name=repo_path[1], org=repo_path[0], url=repo)
         all_repos.append(repo_name_info)
@@ -64,8 +74,8 @@ def build_socless_info(
 
         # TODO: make this pull from serverless 'service' name
         integration_family.meta.integration_family = repo_name_obj.name
-        # TODO: create get_repo_url
-        # integration_family.meta.repo_url = get_repo_url(repo_name, org_name, ghe=ghe)
+
+        integration_family.meta.repo_url = repo_name_obj.url
 
         # get serverless.yml function info, names
         raw_yml = fetch_raw_serverless_yml(

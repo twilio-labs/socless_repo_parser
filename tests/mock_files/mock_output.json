@@ -2,7 +2,7 @@
     "integrations": [
         {
             "meta": {
-                "repo_url": "",
+                "repo_url": "https://github.com/twilio-labs/socless",
                 "integration_family": "socless"
             },
             "functions": [
@@ -559,7 +559,7 @@
         },
         {
             "meta": {
-                "repo_url": "",
+                "repo_url": "https://github.com/twilio-labs/socless-slack",
                 "integration_family": "socless-slack"
             },
             "functions": [
