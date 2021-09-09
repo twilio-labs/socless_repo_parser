@@ -12,7 +12,7 @@ import docstring_parser
 
 
 @dataclass
-class RepoNameInfo:
+class RepoMetadata:
     name: str
     org: str
     url: str = ""
