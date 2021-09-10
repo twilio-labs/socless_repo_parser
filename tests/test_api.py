@@ -6,8 +6,8 @@ from socless_repo_parser.api import build_socless_info_from_cli
 
 #### NOTE: run with cmd `tox -- --github`
 @pytest.mark.github
-def test_output_structure(mock_socless_info_output_as_json):
-    mock_output = build_integration_classes_from_json(mock_socless_info_output_as_json)
+def test_output_structure(mock_socless_info_output_as_dict):
+    mock_output = build_integration_classes_from_json(mock_socless_info_output_as_dict)
     output = build_socless_info_from_cli(
         "twilio-labs/socless, twilio-labs/socless-slack",
         output_file_path="socless_info.json",
@@ -32,3 +32,9 @@ def test_parse_repo_names():
 def test_parse_repo_names_missing_org():
     with pytest.raises(ValueError):
         _ = parse_repo_names("twilio-labs/socless-slack, socless")
+
+
+def test_public_api_exports():
+    from socless_repo_parser.api import SoclessInfoBuilder
+
+    _ = SoclessInfoBuilder()
