@@ -2,6 +2,9 @@ from typing import List, Union
 from socless_repo_parser.builders import SoclessInfoBuilder
 from socless_repo_parser.models import AllIntegrations
 
+# import this to re-export for dependencies & type-checking
+from github import Github  # noqa
+
 
 def build_socless_info_from_cli(
     repos: Union[List, str],
