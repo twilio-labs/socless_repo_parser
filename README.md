@@ -35,7 +35,7 @@ pip3 install "https://github.com/twilio-labs/socless_repo_parser#egg=socless_rep
 from socless_repo_parser.api import SoclessInfoBuilder
 from socless_repo_parser.models import AllIntegrations
 
-repo_list = ["twilio-labs/socless", ""]
+repo_list = ["twilio-labs/socless", "noxasaxon/socless-slack", "https://github.com/twilio-labs/socless-sumologic"]
 
 # For regular github.com
 all_integrations = SoclessInfoBuilder().build_from_github(repo_list)
@@ -43,13 +43,13 @@ all_integrations = SoclessInfoBuilder().build_from_github(repo_list)
 all_integrations = SoclessInfoBuilder().build_from_github(repo_list, token=<my_token_NOT_HARDCODED>)
 
 # for github enterprise in an interactive script, this will ask for your credentials:
-all_integrations = SoclessInfoBuilder().build_from_github_enterprise()
+all_integrations = SoclessInfoBuilder().build_from_github_enterprise(repo_list)
 
 # Option 1 for github enterprise in a non-interactive environment:
 import os
 os.environ["GHE_DOMAIN"] = <my_domain>
 os.environ["GHE_TOKEN"] = <my_token_NOT_HARDCODED_please>
-all_integrations = SoclessInfoBuilder().build_from_github_enterprise()
+all_integrations = SoclessInfoBuilder().build_from_github_enterprise(repo_list)
 
 # Option 2 for github enterprise in a non-interactive environment:
 all_integrations = SoclessInfoBuilder().build_from_github_enterprise(repo_list, token=<my_token_NOT_HARDCODED>, domain=<my_domain>)
