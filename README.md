@@ -71,7 +71,7 @@ my_builder.github = gh_authed
 all_integrations = SoclessInfoBuilder().build_from_github(repo_list)
 ```
 
-### Convert to dictionary or json string
+### Convert to dict, JSON str, or write to `.json` file
 ```python
 from socless_repo_parser.api import SoclessInfoBuilder
 repo_list = ["twilio-labs/socless", ""]
@@ -83,6 +83,10 @@ all_integrations.dict()
 
 # to json string
 all_integrations.json()
+
+# to file
+all_integrations.write_info_to_file() # `socless_info.json`
+all_integrations.write_info_to_file("my_file_path") # `my_file_path.json`
 ```
 
 ## Example of scraper output
