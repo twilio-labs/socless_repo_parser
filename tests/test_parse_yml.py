@@ -5,4 +5,4 @@ def test_parse_yml():
     with open("tests/mock_files/mock_serverless.yml") as f:
         mock_serverless_yml_as_string = f.read()
 
-    result = parse_yml(mock_serverless_yml_as_string)
+    _ = parse_yml(mock_serverless_yml_as_string)

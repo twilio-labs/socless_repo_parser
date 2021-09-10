@@ -7,7 +7,6 @@ yaml = YAML(typ="safe")
 
 
 class ParseYmlOutput(BaseModel):
-    # functions: List[SoclessFunctionMeta] = []
     functions: Dict[str, SoclessFunctionMeta] = {}
 
 

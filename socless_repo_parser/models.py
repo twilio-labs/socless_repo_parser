@@ -1,6 +1,7 @@
 # from pydantic import Field
 import ast
 import json
+import os
 from enum import Enum
 from typing import Dict, List, Any, Optional, Union
 from dataclasses import dataclass
@@ -176,6 +177,12 @@ class IntegrationFamily(BaseModel):
 
 class AllIntegrations(BaseModel):
     integrations: List[IntegrationFamily] = []
+
+    def write_info_to_file(self, file_path: str = "socless_info"):
+        root, ext = os.path.splitext(file_path)
+        ext = ext if ext else ".json"
+        with open(f"{root}{ext}", "w") as f:
+            f.write(json.dumps(self.dict(), indent=4))
 
 
 def build_integration_classes_from_json(input: Union[str, dict]) -> AllIntegrations:

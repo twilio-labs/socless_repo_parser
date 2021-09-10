@@ -2,8 +2,16 @@ import os
 from getpass import getpass
 from urllib.parse import urlparse
 from typing import List, Union
-from socless_repo_parser.constants import GHE_DOMAIN
+from github.MainClass import Github
 from socless_repo_parser.models import RepoMetadata
+
+
+def get_github_domain(gh: Github) -> str:
+    """Use private class attributes to get existing base_url domain."""
+    base_url = gh._Github__requester._Requester__base_url  # type: ignore
+    parsed = urlparse(base_url)
+    assert isinstance(parsed.hostname, str)
+    return parsed.hostname
 
 
 def get_secret(env_name: str = "", prompt: str = ""):
@@ -18,31 +26,20 @@ def get_secret(env_name: str = "", prompt: str = ""):
     return secret
 
 
-def is_repo_ghe(repo_url: str, domain: Union[str, None] = ""):
-    """Check if repo is from Github Enterprise."""
-    domain = domain or os.getenv(GHE_DOMAIN)
-    if domain:
-        return domain in repo_url
-    return False
-
-
-def parse_repo_names(
-    cli_repo_input: Union[List, str], default_org="", ghe=False
-) -> List[RepoMetadata]:
+def parse_repo_names(cli_repo_input: Union[List, str]) -> List[RepoMetadata]:
     """Parse CLI string into a list of repo names and orgs. If no org is supplied, use the default org.
 
     Example repo names:
-        "socless" (will use the default_org)
         "noxasaxon/socless"
         "https://github.com/noxasaxon/socless"
     """
     if isinstance(cli_repo_input, str):
         cli_repo_input = cli_repo_input.split(",")
-    repos = [name.strip() for name in cli_repo_input]
+    repo_identifiers = [name.strip() for name in cli_repo_input]
 
     all_repos = []
-    for repo in repos:
-        parsed = urlparse(repo)
+    for repo_id_string in repo_identifiers:
+        parsed = urlparse(repo_id_string)
         repo_path = parsed.path
 
         # if supplied with a full url, path will have a leading /
@@ -50,56 +47,17 @@ def parse_repo_names(
         repo_path = repo_path.split("/")
 
         if len(repo_path) < 2:
-            # no full url supplied. build url from context
-            if ghe:
-                domain = os.getenv(GHE_DOMAIN, "<no_enterprise_domain>")
-            else:
-                domain = "github.com"
-            name = repo_path[0]
-            url = f"https://{domain}/{default_org}/{name}"
-            repo_name_info = RepoMetadata(name=name, org=default_org, url=url)
+            raise ValueError("Must supply either the full url OR <org>/<name>")
+
+        org = repo_path[0]
+        name = repo_path[1]
+        if parsed.hostname:
+            # full url was given
+            url = repo_id_string
         else:
-            repo_name_info = RepoMetadata(name=repo_path[1], org=repo_path[0], url=repo)
-        all_repos.append(repo_name_info)
+            url = f"https://github.com/{org}/{name}"
 
-    return all_repos
-
-
-def parse_repo_names_v2(
-    cli_repo_input: Union[List, str], default_org="", ghe_domain: str = ""
-) -> List[RepoMetadata]:
-    """Parse CLI string into a list of repo names and orgs. If no org is supplied, use the default org.
-
-    Example repo names:
-        "socless" (will use the default_org)
-        "noxasaxon/socless"
-        "https://github.com/noxasaxon/socless"
-    """
-    if isinstance(cli_repo_input, str):
-        cli_repo_input = cli_repo_input.split(",")
-    repos = [name.strip() for name in cli_repo_input]
-
-    all_repos = []
-    for repo in repos:
-        parsed = urlparse(repo)
-        repo_path = parsed.path
-
-        # if supplied with a full url, path will have a leading /
-        repo_path = repo_path[1:] if repo_path.startswith("/") else repo_path
-        repo_path = repo_path.split("/")
-
-        if len(repo_path) < 2:
-            # no full url supplied. build url from context
-            domain = ghe_domain if ghe_domain else "github.com"
-            if ghe_domain:
-                domain = os.getenv(GHE_DOMAIN, "<no_enterprise_domain>")
-            else:
-                domain = "github.com"
-            name = repo_path[0]
-            url = f"https://{domain}/{default_org}/{name}"
-            repo_name_info = RepoMetadata(name=name, org=default_org, url=url)
-        else:
-            repo_name_info = RepoMetadata(name=repo_path[1], org=repo_path[0], url=repo)
+        repo_name_info = RepoMetadata(name=repo_path[1], org=repo_path[0], url=url)
         all_repos.append(repo_name_info)
 
     return all_repos
