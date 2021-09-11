@@ -12,6 +12,7 @@ from socless_repo_parser.parse_python import build_parsed_function
 from socless_repo_parser.parse_yml import parse_yml
 from socless_repo_parser.models import AllIntegrations, IntegrationFamily, RepoMetadata
 from socless_repo_parser.helpers import (
+    RepoParserError,
     get_github_domain,
     get_secret,
     parse_repo_names,
@@ -33,7 +34,10 @@ def build_integration_family(
 
     # get serverless.yml
     file_contents = gh_repo.get_contents(SERVERLESS_YML)
-    assert not isinstance(file_contents, list)
+    if isinstance(file_contents, list):
+        raise RepoParserError(
+            f"Gitub Path {SERVERLESS_YML} may have pointed to a directory, multiple files returned for serverless.yml contents query."
+        )
     raw_yml: bytes = file_contents.decoded_content
 
     # get serverless.yml function info, names
@@ -43,7 +47,10 @@ def build_integration_family(
 
     # ./functions is a folder containing folders and a `requirements.txt`
     functions_dir_contents = gh_repo.get_contents(FUNCTIONS_DIR_PATH)
-    assert isinstance(functions_dir_contents, list)
+    if not isinstance(functions_dir_contents, list):
+        raise RepoParserError(
+            f"Gitub Path {FUNCTIONS_DIR_PATH} did not point to a directory."
+        )
     functions_folders = [x for x in functions_dir_contents if x.type == "dir"]
 
     for lambda_folder in functions_folders:
@@ -54,10 +61,13 @@ def build_integration_family(
             continue
 
         time.sleep(1)  # ratelimit prevention
-        raw_lambda = gh_repo.get_contents(
-            f"{lambda_folder.path}/{LAMBDA_FUNCTION_FILE}"
-        )
-        assert not isinstance(raw_lambda, list)
+        lambda_path = f"{lambda_folder.path}/{LAMBDA_FUNCTION_FILE}"
+        raw_lambda = gh_repo.get_contents(lambda_path)
+
+        if isinstance(raw_lambda, list):
+            raise RepoParserError(
+                f"Gitub Path {lambda_path} may have pointed to a directory, multiple files returned for serverless.yml contents query."
+            )
 
         function_info = build_parsed_function(
             meta_from_yml=all_serverless_fn_meta.functions[lambda_folder.name],
@@ -71,8 +81,8 @@ def build_integration_family(
 
 class SoclessInfoBuilder:
     def __init__(self) -> None:
-        self.github = None
-        self.github_enterprise = None
+        self.github: Union[Github, None] = None
+        self.github_enterprise: Union[Github, None] = None
 
     def get_or_init_github(self, token: str = "") -> Github:
         if not self.github:
@@ -85,7 +95,7 @@ class SoclessInfoBuilder:
     def get_or_init_github_enterprise(
         self, token: str = "", domain: str = ""
     ) -> Github:
-        if not self.github_enterprise:
+        if self.github_enterprise is None:
             ghe_domain = domain or get_secret(
                 GHE_DOMAIN, "Github Enterprise Domain (instead of github.com)"
             )
@@ -95,7 +105,6 @@ class SoclessInfoBuilder:
                 "Personal Access Token authorized for the github enterprise domain",
             )
             self.github_enterprise = Github(base_url=base_url, login_or_token=pat_token)
-
         return self.github_enterprise
 
     def build_from_github(
@@ -122,10 +131,9 @@ class SoclessInfoBuilder:
     ) -> AllIntegrations:
         """If user already has GHE pygithub instance, use it. otherwise create it from env vars or terminal"""
         self.get_or_init_github_enterprise(token, domain)
-        assert self.github_enterprise
 
         # use private attributes to get the github enterprise domain
-        ghe_domain = get_github_domain(self.github_enterprise)
+        ghe_domain = get_github_domain(self.github_enterprise)  # type: ignore
 
         all_integrations = AllIntegrations()
 

@@ -6,11 +6,18 @@ from github.MainClass import Github
 from socless_repo_parser.models import RepoMetadata
 
 
+class RepoParserError(Exception):
+    pass
+
+
 def get_github_domain(gh: Github) -> str:
     """Use private class attributes to get existing base_url domain."""
     base_url = gh._Github__requester._Requester__base_url  # type: ignore
     parsed = urlparse(base_url)
-    assert isinstance(parsed.hostname, str)
+    if not isinstance(parsed.hostname, str):
+        raise RepoParserError(
+            "Unable to get domain from pygithub enterprise Github class"
+        )
     return parsed.hostname
 
 
