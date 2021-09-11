@@ -6,12 +6,13 @@ from socless_repo_parser.models import SoclessFunctionMeta
 yaml = YAML(typ="safe")
 
 
-class ParseYmlOutput(BaseModel):
+class SoclessParsedYml(BaseModel):
     functions: Dict[str, SoclessFunctionMeta] = {}
 
 
-def parse_yml(raw_yml) -> ParseYmlOutput:
-    output = ParseYmlOutput()
+def parse_yml(raw_yml) -> SoclessParsedYml:
+    """Retrieve relevant SOCless function API info from `serverless.yml`."""
+    output = SoclessParsedYml()
     yml_dict = yaml.load(raw_yml)
 
     yml_functions = yml_dict["functions"]
