@@ -1264,6 +1264,106 @@
                             "topic": "topic"
                         }
                     ]
+                },
+                {
+                    "meta": {
+                        "lambda_folder_name": "upload_file",
+                        "deployed_lambda_name": "socless_slack_upload_file",
+                        "serverless_lambda_name": "UploadFile",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Send a Slack message without expecting a response https://api.slack.com/methods/files.upload",
+                    "arguments": [
+                        {
+                            "name": "context",
+                            "data_type": "null",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": true,
+                            "default_value": null
+                        },
+                        {
+                            "name": "target",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "target_type",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "content",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "file",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "filename",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "Filename of the file.",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "title",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "initial_comment",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        },
+                        {
+                            "name": "token",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": ""
+                        }
+                    ],
+                    "supports_kwargs": true,
+                    "return_statements": [
+                        {
+                            "response": "resp",
+                            "slack_id": "slack_target"
+                        }
+                    ]
                 }
             ]
         }
