@@ -2,6 +2,15 @@ import json
 import pytest
 
 
+def get_mock_file(file_name: str) -> str:
+    MOCK_DIR_PATH = "tests/mock_files/"
+
+    file_path = f"{MOCK_DIR_PATH}{file_name}"
+    with open(file_path) as f:
+        python_file_as_string = f.read()
+    return python_file_as_string
+
+
 def pytest_addoption(parser):
     # `tox -- --github`
     parser.addoption(

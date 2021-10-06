@@ -1,5 +1,4 @@
-from socless import socless_bootstrap, socless_template_string
-from slack_helpers import slack_client, resolve_slack_target, slack_post_msg_wrapper
+from socless import socless_bootstrap
 from typing import List, Optional, Union
 
 
