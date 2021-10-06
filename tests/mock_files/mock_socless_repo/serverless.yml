@@ -1,0 +1,87 @@
+service: socless-mock
+unresolvedVariablesNotificationMode: error
+
+provider:
+  name: aws
+  runtime: python3.7
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}"
+  stage: ${{opt:stage}}
+  region: ${{opt:region}}
+  versionFunctions: false
+  memorySize: 128
+  timeout: 60
+  environment:
+    SOCLESS_VAULT: ${{cf:socless-${{self:provider.stage}}.SoclessVault}}
+    SOCLESS_RESULTS_TABLE: ${{cf:socless-${{self:provider.stage}}.ExecutionResultsTable}}
+    SOCLESS_MESSAGE_RESPONSE_TABLE: ${{cf:socless-${{self:provider.stage}}.MessageResponsesTable}}
+    SOCLESS_EVENTS_TABLE: ${{cf:socless-${{self:provider.stage}}.EventsTable}}
+    # EXAMPLE_ENV_VARIABLE_FROM_SSM: ${{ssm:/socless/template/example_variable}} # this will block deployments if it doesnt exist in ssm
+    # EXAMPLE_ENV_VARIABLE_FROM_SSM_ENCRYPTYED: ${{ssm:/socless/template/example_variable_with_encryption~true}} # this will block deployments if it doesnt exist in ssm
+  vpc:
+    securityGroupIds:
+      - ${{cf:socless-${{self:provider.stage}}.LambdaVpcSG}}
+    subnetIds:
+      - ${{cf:socless-${{self:provider.stage}}.PrivateFunctionSubnet}}
+  role: ${{cf:socless-${{self:provider.stage}}.LambdaExecutionRoleArn}}
+
+plugins:
+  # plugin that converts socless playbook.json to valid cloudformation Step Functions definition
+  - sls-apb 
+  # Plugin that packages python lambda functions using Docker, with support for ./common_files folder and a shared requirements.txt for all lambdas
+  - socless_integration_packager 
+
+package:
+  individually: true
+
+custom:
+  sls_apb:
+    logging: true
+  soclessPackager:
+    buildDir: build
+  core:
+    SetInvestigationStatus: ${{cf:socless-${{self:provider.stage}}.SetInvestigationStatus}}
+    MergeParallelOutput: ${{cf:socless-${{self:provider.stage}}.MergeParallelOutput}}
+    HTTPRequest: ${{cf:socless-${{self:provider.stage}}.HTTPRequest}}
+    AWSRequest: ${{cf:socless-${{self:provider.stage}}.AWSRequest}}
+
+  # This is an example of an Integration Test playbook. 
+  # An integration test playbook should include all the lambda functions in this repository, and should try to cover 
+  # all possible logical branches in your lambda code if possible.
+  # The integration test can be used to ensure that deployed code will work correctly in a playbook, especially for things that cannot be
+  # reliably Unit Tested. 
+  playbooks:
+    - socless_template_integration_test
+
+functions:
+  # This is an example SOCless function. 
+  SendOldTimeyTelegram:
+    handler: lambda_function.lambda_handler
+    # The typical naming convention is `<service_name>_<function_name>`
+    name: socless_template_send_old_timey_telegram
+    description: Socless integration to send a telegram
+    package:
+      include:
+        # The function_name is also the name used as a directory in the ./functions folder 
+        - functions/send_old_timey_telegram
+
+resources:
+  Resources:
+    # This is an example of how you can keep a static input inside SSM for your integration test playbook.
+    # To run an integration test, supply this testcase to create_events which will start the integration test playbook.
+    SoclessTemplateIntegrationTestcase:
+      Type: "AWS::SSM::Parameter"
+      Properties:
+        Description:
+          Fn::Sub: "Input for ${{self:service}}'s integration test playbook"
+        # the ssm path used for socless is /socless/<socless_integration_identifier>/<description_of_value>
+        Name: /socless/template/integration_test_input 
+        Type: String # test case is stored in plaintext in github, so not using a securestring here. Do not use secrets in the test case
+        # The test case must be valid JSON, but in order for serverless framework to read and upload to ssm the file needs to be .txt
+        Value: ${{file(playbooks/socless_template_integration_test/test_case_json.txt)}}
+
+  Outputs:
+    # The ARN of the lambda function in this repo, so that it can be imported in playbooks written elsewhere
+    SendOldTimeyTelegram:
+      Description: Socless Template integration to mock what a real socless lambda would do
+      Value:
+        Fn::Sub: ${SendOldTimeyTelegramLambdaFunction.Arn}

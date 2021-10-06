@@ -1,0 +1,7 @@
+# Because this requirements.txt file is located at the root of ./functions, all modules listed here will 
+#   automatically be included in packaging for all lambda functions.
+#
+# You can also specify dependencies for a single lambda function by including another requirements.txt 
+#   in that lambda's directory: ./functions/<my_function>/requirements.txt
+
+git+https://github.com/twilio-labs/socless_python.git@1.5.0#egg=socless

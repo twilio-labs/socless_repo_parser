@@ -1,0 +1,56 @@
+{
+    "Playbook": "SoclessTemplateIntegrationTest",
+    "Comment": "Playbook to demonstrate what an integration test looks like for SOCless",
+    "StartAt": "An_Example_PASS_Step",
+    "States": {
+        "An_Example_PASS_Step": {
+            "Type": "Pass",
+            "Next": "Send_A_Telegram_Using_Lambda_In_THIS_Repo"
+        },
+        "Send_A_Telegram_Using_Lambda_In_THIS_Repo" : {
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${{self:functions.SendOldTimeyTelegram.name}}",
+            "Parameters": {
+                "name": "Elias Kronish",
+                "message": "We are looking forward to the annual christmas party"
+            },
+            "Next": "Example_Choice_State_Referencing_Previous_Step_Output"
+        },
+        "Example_Choice_State_Referencing_Previous_Step_Output": {
+            "Type": "Choice",
+            "Choices": [
+                {
+                    "Variable": "$.results.telegram",
+                    "IsPresent": true,
+                    "Next": "Message_Sent"
+                },
+                {
+                    "Variable": "$.results.telegram",
+                    "IsPresent": false,
+                    "Next": "Message_Not_Sent"
+                }
+            ],
+            "Default": "Message_Sent"
+        },
+        "Message_Sent": {
+            "Type": "Pass",
+            "Next": "Close_Investigation"
+        },
+        "Message_Not_Sent": {
+            "Type": "Pass",
+            "Next" : "Stop_Playbook_With_Failure"
+        },
+        "Stop_Playbook_With_Failure" : {
+            "Type": "Fail"
+        },
+        "Close_Investigation": {
+            "Type": "Task",
+            "Resource": "${{self:custom.core.SetInvestigationStatus}}",
+            "Parameters": {
+                "investigation_id": "$.artifacts.event.investigation_id",
+                "status": "closed"
+            },
+            "End": true
+        }
+    }
+}

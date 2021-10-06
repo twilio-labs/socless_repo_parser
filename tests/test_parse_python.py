@@ -5,7 +5,7 @@ from socless_repo_parser.models import (
 from socless_repo_parser.parse_python import (
     socless_lambda_file_parser,
 )
-from conftest import get_mock_file
+from tests.conftest import get_mock_file
 
 
 MOCK_LAMBDA_FILE = get_mock_file("mock_lambda.py")

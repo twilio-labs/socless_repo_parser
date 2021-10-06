@@ -1,0 +1,25 @@
+{
+  "name": "socless-template",
+  "version": "1.0.0",
+  "description": "SOCless template for creating integrations and playbooks",
+  "main": "index.js",
+  "scripts": {
+    "init": "python3 rename.py",
+    "rename": "python3 rename.py",
+    "test": ". venv/bin/activate && tox",
+    "pretest": "python3 -m venv venv && . venv/bin/activate && pip3 install tox -qq",
+    "posttest": "find . | grep -E '(__pycache__|.pytest_cache|.egg-info)' | xargs rm -rf",
+    "print": "serverless print --stage sandbox --region us-west-1 --verbose",
+    "dev": "serverless deploy --stage dev --region us-west-2 --verbose",
+    "stage": "serverless deploy --stage stage --region us-east-2 --verbose",
+    "prod": "serverless deploy --stage prod --region us-east-1 --verbose",
+    "sandbox": "serverless deploy --stage sandbox --region us-west-1 --verbose"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "serverless": "2.35.0",
+    "sls-apb": "git+https://github.com/twilio-labs/sls-apb.git#1.3.0",
+    "socless_integration_packager": "git+https://github.com/twilio-labs/socless_integration_packager.git#1.0.0"
+  }
+}

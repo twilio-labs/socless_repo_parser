@@ -8,7 +8,9 @@ build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
 # addopts = '--cov=src'
+addopts = "--cov=socless_repo_parser --ignore=tests/mock_files/mock_socless_repo"
 testpaths = ["tests"]
+
 
 [tool.coverage.run] # https://coverage.readthedocs.io/en/latest/config.html
 branch = true
