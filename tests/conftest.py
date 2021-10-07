@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 
 from socless_repo_parser.models import IntegrationFamily, SoclessFunction
 
+PATH_TO_LOCAL_MOCK_REPO = "tests/mock_files/mock_socless_repo"
+
 
 @pytest.fixture(scope="session", autouse=True)
 def load_dotenv_if_exists():

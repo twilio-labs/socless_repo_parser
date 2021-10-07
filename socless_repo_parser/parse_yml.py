@@ -1,3 +1,4 @@
+import os
 from ruamel.yaml import YAML
 from pydantic import BaseModel
 from typing import Dict
@@ -19,8 +20,11 @@ class SoclessParsedYml(BaseModel):
                 return fn
         raise Exception(f"{deployed_name} not found in SoclessParsedYml.")
 
-    def get_fn_path(self, deployed_lambda_name) -> str:
+    def get_fn_path_github(self, deployed_lambda_name) -> str:
         return f"{self.fn_paths[deployed_lambda_name]}/{LAMBDA_FUNCTION_FILE}"
+
+    def get_fn_path_local(self, deployed_lambda_name) -> str:
+        return os.path.join(self.fn_paths[deployed_lambda_name], LAMBDA_FUNCTION_FILE)
 
 
 def parse_yml(raw_yml) -> SoclessParsedYml:

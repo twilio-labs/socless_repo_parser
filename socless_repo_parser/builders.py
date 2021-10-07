@@ -25,6 +25,13 @@ from socless_repo_parser.helpers import (
 )
 
 
+def validate_dir_path(dir_path: str):
+    if not os.path.exists(dir_path):
+        raise Exception(f"{dir_path} does not exist.")
+    if not os.path.isdir(dir_path):
+        raise Exception(f"{dir_path} is not a directory.")
+
+
 class BuilderError(Exception):
     pass
 
@@ -108,7 +115,7 @@ class IntegrationFamilyBuilder:
     def _fetch_and_parse_serverless_from_local(
         self, local_dir_path: str
     ) -> SoclessParsedYml:
-        with open(f"{local_dir_path}/{SERVERLESS_YML}") as f:
+        with open(os.path.join(local_dir_path, SERVERLESS_YML)) as f:
             raw_yml = f.read()
         return parse_yml(raw_yml)
 
@@ -118,8 +125,11 @@ class IntegrationFamilyBuilder:
         raw_lambda_files: Dict[str, ByteString] = {}
 
         for fn_meta in parsed_yml.functions.values():
-            lambda_path = f"{parsed_yml.fn_paths[fn_meta.deployed_lambda_name]}/{LAMBDA_FUNCTION_FILE}"
-            full_lambda_path = f"{local_dir_path}/{lambda_path}"
+            full_lambda_path = os.path.join(
+                local_dir_path,
+                parsed_yml.fn_paths[fn_meta.deployed_lambda_name],
+                LAMBDA_FUNCTION_FILE,
+            )
 
             with open(full_lambda_path) as f:
                 raw_lambda_as_str = f.read()
@@ -130,7 +140,7 @@ class IntegrationFamilyBuilder:
         return raw_lambda_files
 
     def _fetch_pkg_json_from_local(self, local_dir_path):
-        with open(f"{local_dir_path}/{PACKAGE_JSON}") as f:
+        with open(os.path.join(local_dir_path, PACKAGE_JSON)) as f:
             pkg_json = f.read()
         return json.loads(pkg_json)
 
@@ -202,4 +212,14 @@ class SoclessInfoBuilder:
 
             all_integrations.integrations.append(integration_family)
 
+        return all_integrations
+
+    def build_from_local(self, dir_paths: List[str]):
+        all_integrations = AllIntegrations()
+        for local_repo_path in dir_paths:
+            validate_dir_path(local_repo_path)
+            integration_family = IntegrationFamilyBuilder().build_from_local(
+                local_repo_path
+            )
+            all_integrations.integrations.append(integration_family)
         return all_integrations

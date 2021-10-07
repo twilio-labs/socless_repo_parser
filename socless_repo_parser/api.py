@@ -1,5 +1,5 @@
 from typing import List, Union
-from socless_repo_parser.builders import SoclessInfoBuilder
+from socless_repo_parser.builders import SoclessInfoBuilder, validate_dir_path
 from socless_repo_parser.models import AllIntegrations
 
 # import this to re-export for dependencies & type-checking
@@ -48,20 +48,8 @@ def build_socless_info_from_local(dir_paths: List[str]):
     ## First, validate all dir_paths
     for socless_dir_path in dir_paths:
         # ensure directory exists
-        print(socless_dir_path)
-        pass
+        validate_dir_path(socless_dir_path)
 
     ## if validated, build data
-    for socless_dir_path in dir_paths:
-        print(socless_dir_path)
-        pass
-        # get serverless.yml from directory
-
-        # get functions
-
-        # build integration info
-
-        # save to all_integrations
-
-    # return all_integrations
-    pass
+    all_integrations = SoclessInfoBuilder().build_from_local(dir_paths)
+    return all_integrations
