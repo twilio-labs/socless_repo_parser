@@ -18,6 +18,10 @@ class RepoMetadata:
     org: str
     url: str = ""
 
+    def get_full_name(self) -> str:
+        """For use in pygithub's get_repo()"""
+        return f"{self.org}/{self.name}"
+
 
 @dataclass
 class FileExistence:
