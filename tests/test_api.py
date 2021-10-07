@@ -1,6 +1,8 @@
-import pytest
+import pytest, json
 from socless_repo_parser.helpers import parse_repo_names
-from socless_repo_parser.models import build_integration_classes_from_json
+from socless_repo_parser.models import (
+    build_integration_classes_from_json,
+)
 from socless_repo_parser.api import build_socless_info_from_cli
 
 
@@ -13,8 +15,12 @@ def test_output_structure(mock_socless_info_output_as_dict):
         output_file_path="socless_info.json",
     )
 
-    assert output == mock_output
-    assert output.json()
+    # assert that it converts to json without error
+    output_as_json = output.json()
+    mock_output_as_json = mock_output.json()
+
+    # assert equality using dicts
+    assert json.loads(output_as_json) == json.loads(mock_output_as_json)
 
 
 def test_parse_repo_names():
