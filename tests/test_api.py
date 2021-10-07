@@ -11,7 +11,7 @@ from socless_repo_parser.api import build_socless_info_from_cli
 def test_output_structure(mock_socless_info_output_as_dict):
     mock_output = build_integration_classes_from_json(mock_socless_info_output_as_dict)
     output = build_socless_info_from_cli(
-        "twilio-labs/socless, twilio-labs/socless-slack",
+        "twilio-labs/socless",
         output_file_path="socless_info.json",
     )
 
