@@ -33,7 +33,7 @@ class IntegrationFamilyBuilder:
         parsed_yml = self._fetch_and_parse_serverless_yml_from_github(gh_repo)
         raw_lambda_files = self._fetch_raw_lambda_files_from_github(gh_repo, parsed_yml)
         meta = IntegrationMeta(
-            repo_url=gh_repo.full_name, integration_family=parsed_yml.service
+            repo_url=gh_repo.html_url, integration_family=parsed_yml.service
         )
         return self._parse_lambdas_and_build_family(parsed_yml, raw_lambda_files, meta)
 
