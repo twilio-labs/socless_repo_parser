@@ -35,6 +35,7 @@ setenv =
 deps =	
     pytest
     pytest-cov
+    python-dotenv
     # coverage[toml]
     -r{toxinidir}/requirements.txt
 """

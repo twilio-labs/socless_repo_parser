@@ -1,8 +1,14 @@
 import json
 from typing import List
 import pytest
+from dotenv import load_dotenv
 
 from socless_repo_parser.models import IntegrationFamily, SoclessFunction
+
+
+@pytest.fixture(scope="session", autouse=True)
+def load_dotenv_if_exists():
+    load_dotenv()
 
 
 def get_mock_file(file_name: str) -> str:

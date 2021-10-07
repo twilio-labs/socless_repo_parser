@@ -1,3 +1,4 @@
+import os
 import time, json
 from github.Repository import Repository
 from socless_repo_parser.constants import (
@@ -141,8 +142,11 @@ class SoclessInfoBuilder:
 
     def get_or_init_github(self, token: str = "") -> Github:
         if not self.github:
+            env_token = os.getenv("GH_TOKEN")
             if token:
                 self.github = Github(login_or_token=token)
+            elif env_token:
+                self.github = Github(login_or_token=env_token)
             else:
                 self.github = Github()
         return self.github
