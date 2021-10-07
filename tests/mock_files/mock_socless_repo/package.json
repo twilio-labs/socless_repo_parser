@@ -1,5 +1,6 @@
 {
   "name": "socless-template",
+  "homepage": "https://github.com/twilio-labs/socless-template",
   "version": "1.0.0",
   "description": "SOCless template for creating integrations and playbooks",
   "main": "index.js",

@@ -1,0 +1,53 @@
+{
+    "integrations": [
+        {
+            "meta": {
+                "repo_url": "https://github.com/twilio-labs/socless-template",
+                "integration_family": "socless-template"
+            },
+            "functions": [
+                {
+                    "meta": {
+                        "lambda_folder_name": "send_old_timey_telegram",
+                        "deployed_lambda_name": "socless_template_send_old_timey_telegram",
+                        "serverless_lambda_name": "SendOldTimeyTelegram",
+                        "supported_in_playbook": true
+                    },
+                    "resource_type": "socless_task",
+                    "description": "Compose and send an old timey telegram message.",
+                    "arguments": [
+                        {
+                            "name": "name",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "   The recipient of this telegram",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "message",
+                            "data_type": "string",
+                            "required": true,
+                            "description": "The message to send this user",
+                            "placeholder": "",
+                            "internal": false,
+                            "default_value": null
+                        },
+                        {
+                            "name": "title",
+                            "data_type": "string",
+                            "required": false,
+                            "description": "  The recipient's title",
+                            "placeholder": "Dr",
+                            "internal": false,
+                            "default_value": "Dr"
+                        }
+                    ],
+                    "supports_kwargs": false,
+                    "return_statements": []
+                }
+            ]
+        }
+    ]
+}
