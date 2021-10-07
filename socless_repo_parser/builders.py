@@ -15,7 +15,6 @@ from socless_repo_parser.models import (
     AllIntegrations,
     IntegrationFamily,
     IntegrationMeta,
-    RepoMetadata,
 )
 from socless_repo_parser.helpers import (
     RepoParserError,
@@ -62,8 +61,7 @@ class IntegrationFamilyBuilder:
         raw_lambda_files: Dict[str, ByteString],
         meta: IntegrationMeta,
     ) -> IntegrationFamily:
-        integration_family = IntegrationFamily()
-        integration_family.meta = meta
+        integration_family = IntegrationFamily(meta=meta)
         for deployed_name, raw_lambda in raw_lambda_files.items():
 
             function_info = build_parsed_function(
@@ -136,52 +134,6 @@ class IntegrationFamilyBuilder:
         return json.loads(pkg_json)
 
 
-def build_integration_family(
-    repo_name_info: RepoMetadata, github_instance: Github
-) -> IntegrationFamily:
-    integration_family = IntegrationFamily()
-
-    # TODO: make this pull from serverless 'service' name
-    integration_family.meta.integration_family = repo_name_info.name
-
-    integration_family.meta.repo_url = repo_name_info.url
-
-    # get repo object
-    gh_repo = github_instance.get_repo(f"{repo_name_info.org}/{repo_name_info.name}")
-
-    # get serverless.yml
-    file_contents = gh_repo.get_contents(SERVERLESS_YML)
-    if isinstance(file_contents, list):
-        raise RepoParserError(
-            f"Gitub Path {SERVERLESS_YML} may have pointed to a directory, multiple files returned for serverless.yml contents query."
-        )
-    raw_yml: bytes = file_contents.decoded_content
-
-    # get serverless.yml function info, names
-    all_serverless_fn_meta = parse_yml(raw_yml)
-
-    time.sleep(1)  # ratelimit prevention
-
-    for fn_meta in all_serverless_fn_meta.functions.values():
-        lambda_path = f"{all_serverless_fn_meta.fn_paths[fn_meta.deployed_lambda_name]}/{LAMBDA_FUNCTION_FILE}"
-        time.sleep(1)  # ratelimit prevention
-        raw_lambda = gh_repo.get_contents(lambda_path)
-
-        if isinstance(raw_lambda, list):
-            raise RepoParserError(
-                f"Gitub Path {lambda_path} may have pointed to a directory, multiple files returned for serverless.yml contents query."
-            )
-
-        function_info = build_parsed_function(
-            meta_from_yml=all_serverless_fn_meta.functions[fn_meta.lambda_folder_name],
-            py_file_string=raw_lambda.decoded_content,
-        )
-
-        integration_family.functions.append(function_info)
-
-    return integration_family
-
-
 class SoclessInfoBuilder:
     def __init__(self) -> None:
         self.github: Union[Github, None] = None
@@ -215,13 +167,10 @@ class SoclessInfoBuilder:
     ) -> AllIntegrations:
         """For a list of repos, build socless info."""
         all_integrations = AllIntegrations()
-
-        repos_meta_info = parse_repo_names(cli_repo_input=repo_list)
-        for repo_meta in repos_meta_info:
+        for repo_meta in parse_repo_names(cli_repo_input=repo_list):
             time.sleep(0.5)
-            integration_family = build_integration_family(
-                repo_meta, self.get_or_init_github(token)
-            )
+            gh_repo = self.get_or_init_github(token).get_repo(repo_meta.get_full_name())
+            integration_family = IntegrationFamilyBuilder().build_from_github(gh_repo)
             all_integrations.integrations.append(integration_family)
 
         return all_integrations
@@ -239,18 +188,13 @@ class SoclessInfoBuilder:
         ghe_domain = get_github_domain(self.github_enterprise)  # type: ignore
 
         all_integrations = AllIntegrations()
-
-        repos_meta_info = parse_repo_names(cli_repo_input=repo_list)
-
-        for repo_meta in repos_meta_info:
+        for repo_meta in parse_repo_names(cli_repo_input=repo_list):
             if ghe_domain in repo_meta.url:
-                integration_family = build_integration_family(
-                    repo_meta, self.get_or_init_github_enterprise()
-                )
+                gh = self.get_or_init_github_enterprise()
             else:
-                integration_family = build_integration_family(
-                    repo_meta, self.get_or_init_github()
-                )
+                gh = self.get_or_init_github()
+            gh_repo = gh.get_repo(repo_meta.get_full_name())
+            integration_family = IntegrationFamilyBuilder().build_from_github(gh_repo)
 
             all_integrations.integrations.append(integration_family)
 
