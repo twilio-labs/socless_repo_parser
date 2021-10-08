@@ -156,17 +156,9 @@ class SoclessFunction(BaseModel):
 
         for param in parsed_docstring.params:
             for arg in self.arguments:
-                if arg.name == param.arg_name:
+                if arg.name == param.arg_name.strip():
                     arg.description = param.description
                     break  # only breaks inner `arg` loop
-
-        # print(parsed_docstring.meta)  # includes params & returns
-        ### return statement documentation:
-        # for ret in parsed_docstring.many_returns:
-        #     print(ret.args)
-        #     print(ret.description)
-        #     print(ret.return_name)
-        #     print(ret.type_name)
 
 
 class IntegrationMeta(BaseModel):
