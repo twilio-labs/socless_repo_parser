@@ -78,6 +78,8 @@ class IntegrationFamilyBuilder:
             )
 
             integration_family.functions.append(function_info)
+
+        integration_family.fill_missing_arg_descriptions()
         return integration_family
 
     def _fetch_and_parse_serverless_yml_from_github(
