@@ -1,8 +1,10 @@
+import pytest
 from socless_repo_parser.models import (
     JsonDataType,
     SoclessFunctionArgument,
 )
 from socless_repo_parser.parse_python import (
+    convert_python_primitive_name_to_json_primitive_name,
     socless_lambda_file_parser,
 )
 from tests.conftest import get_mock_file
@@ -166,3 +168,11 @@ def test_parsed_handle_state_args_and_data_types():
         assert found
 
     assert len(parsed_file.arguments) == len(expected_args)
+
+
+def test_convert_python_primitive_name_to_json_primitive_name():
+    not_implemented_type = "ImNotAType"
+    with pytest.raises(NotImplementedError):
+        convert_python_primitive_name_to_json_primitive_name(not_implemented_type)
+    assert convert_python_primitive_name_to_json_primitive_name("any")
+    assert convert_python_primitive_name_to_json_primitive_name("Any")
