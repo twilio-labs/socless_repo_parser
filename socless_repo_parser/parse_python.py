@@ -103,11 +103,11 @@ def convert_python_primitive_name_to_json_primitive_name(type_name: str) -> str:
         return JsonDataType.OBJECT
     elif type_name == list.__name__:
         return JsonDataType.ARRAY
-    elif type_name == "NoneType":
+    elif type_name == "nonetype":
         return JsonDataType.NULL
-    elif type_name == "None":
+    elif type_name == "none":
         return JsonDataType.NULL
-    elif type_name == "Any":
+    elif type_name == "any":
         return JsonDataType.ANY
     else:
         raise NotImplementedError(
