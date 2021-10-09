@@ -20,7 +20,7 @@
                             "name": "method",
                             "data_type": "string",
                             "required": true,
-                            "description": "",
+                            "description": "GET | POST | PUT | PATCH | DELETE",
                             "placeholder": "",
                             "internal": false,
                             "default_value": null
@@ -29,7 +29,7 @@
                             "name": "url",
                             "data_type": "string",
                             "required": true,
-                            "description": "",
+                            "description": "full url of the request destination",
                             "placeholder": "",
                             "internal": false,
                             "default_value": null
@@ -38,7 +38,7 @@
                             "name": "raise_for_status",
                             "data_type": "boolean",
                             "required": false,
-                            "description": "",
+                            "description": "(optional) raise an HTTPError if request failed",
                             "placeholder": true,
                             "internal": false,
                             "default_value": true
@@ -47,7 +47,7 @@
                             "name": "return_headers",
                             "data_type": "boolean",
                             "required": false,
-                            "description": "",
+                            "description": "(optional) include a 'headers' key of the http_response headers in this lambda's return dict.",
                             "placeholder": "",
                             "internal": false,
                             "default_value": false
@@ -56,7 +56,7 @@
                             "name": "auth",
                             "data_type": "array<>",
                             "required": false,
-                            "description": "",
+                            "description": "(optional) Auth array to enable Basic/Digest/Custom HTTP Auth.",
                             "placeholder": "",
                             "internal": false,
                             "default_value": []
