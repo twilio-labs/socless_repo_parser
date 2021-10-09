@@ -17,20 +17,18 @@ def handle_state(
     **kwargs,
 ):
     """Test file for the python parser
+
     Args:
-        no_type_info_test : an argument description
-        # skipping arg description, part of test
-        str_test :
-        list_test : an argument description
-        # test if comments break this
-        dict_test : an argument description
-        int_test : an argument description
-        none_test: an argument description
-        empty_dict_test: an argument description
-        union_test : an argument description
-        optional_test : an argument description
-        list_typing_test : an argument description
-        test_if_hint_overrides_default_none_type : an argument description
+        str_test : an argument description
+        list_test :
+        dict_test :
+        int_test :
+        none_test:
+        empty_dict_test:
+        union_test :
+        optional_test :
+        list_typing_test :
+        test_if_hint_overrides_default_none_type :
     """
 
     test = "success"

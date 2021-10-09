@@ -25,7 +25,7 @@ def build_socless_info_from_cli(
 
 
 # duplicating, this is new function
-def build_socless_info_from_github_cli(
+def build_from_github(
     repos: Union[List, str],
     ghe: bool = False,
     output_file_path: str = "socless_info",
@@ -42,7 +42,7 @@ def build_socless_info_from_github_cli(
     return all_integrations
 
 
-def build_socless_info_from_local(dir_paths: List[str]):
+def build_from_local(dir_paths: List[str]):
     # all_integrations = AllIntegrations()
 
     ## First, validate all dir_paths

@@ -17,7 +17,7 @@ def lambda_handler(event, context):
     ):
         """Creates a new event in Socless using the socless_create_events api from the socless_python library.
         Args:
-            event_type (str): Human Readable Event name e.g 'Investigate Login'
+            event_type : Human Readable Event name e.g 'Investigate Login'
             details (list): List of dictionaries containing the event details
             playbook (str): The name of the playbook to execute
             dedup_keys (list): The keys to use to deduplicate the event

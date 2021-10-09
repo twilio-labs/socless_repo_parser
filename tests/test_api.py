@@ -3,14 +3,14 @@ from socless_repo_parser.helpers import parse_repo_names
 from socless_repo_parser.models import (
     build_integration_classes_from_json,
 )
-from socless_repo_parser.api import build_socless_info_from_cli
+from socless_repo_parser.api import build_from_github
 
 
 #### NOTE: run with cmd `tox -- --github`
 @pytest.mark.github
 def test_output_structure(mock_socless_info_output_as_dict):
     mock_output = build_integration_classes_from_json(mock_socless_info_output_as_dict)
-    output = build_socless_info_from_cli(
+    output = build_from_github(
         "twilio-labs/socless",
         output_file_path="socless_info.json",
     )
