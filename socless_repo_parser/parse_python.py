@@ -92,6 +92,7 @@ def get_return_statements(parent_node: ast.FunctionDef):
 
 
 def convert_python_primitive_name_to_json_primitive_name(type_name: str) -> str:
+    type_name = type_name.lower()
     if type_name == str.__name__:
         return JsonDataType.STRING
     elif type_name == bool.__name__:
