@@ -92,23 +92,19 @@ def get_return_statements(parent_node: ast.FunctionDef):
 
 
 def convert_python_primitive_name_to_json_primitive_name(type_name: str) -> str:
-    if type_name == str.__name__:
-        return JsonDataType.STRING
-    elif type_name == bool.__name__:
-        return JsonDataType.BOOLEAN
-    elif type_name == int.__name__:
-        return JsonDataType.NUMBER
-    elif type_name == dict.__name__:
-        return JsonDataType.OBJECT
-    elif type_name == list.__name__:
-        return JsonDataType.ARRAY
-    elif type_name == "NoneType":
-        return JsonDataType.NULL
-    elif type_name == "None":
-        return JsonDataType.NULL
-    elif type_name == "Any":
-        return JsonDataType.ANY
-    else:
+    primitive_map = {
+        str.__name__: JsonDataType.STRING,
+        bool.__name__: JsonDataType.BOOLEAN,
+        int.__name__: JsonDataType.NUMBER,
+        dict.__name__: JsonDataType.OBJECT,
+        list.__name__: JsonDataType.ARRAY,
+        "nonetype": JsonDataType.NULL,
+        "none": JsonDataType.NULL,
+        "any": JsonDataType.ANY,
+    }
+    try:
+        return primitive_map[type_name.lower()]
+    except KeyError:
         raise NotImplementedError(
             f"No json type conversion configured for python type: {type_name}"
         )

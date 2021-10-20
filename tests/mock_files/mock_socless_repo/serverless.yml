@@ -1,0 +1,81 @@
+service: socless-template
+unresolvedVariablesNotificationMode: error
+
+provider:
+  name: aws
+  runtime: python3.7
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}"
+  stage: ${{opt:stage}}
+  region: ${{opt:region}}
+  versionFunctions: false
+  memorySize: 128
+  timeout: 60
+  environment:
+    SOCLESS_VAULT: ${{cf:socless-${{self:provider.stage}}.SoclessVault}}
+    SOCLESS_RESULTS_TABLE: ${{cf:socless-${{self:provider.stage}}.ExecutionResultsTable}}
+    SOCLESS_MESSAGE_RESPONSE_TABLE: ${{cf:socless-${{self:provider.stage}}.MessageResponsesTable}}
+    SOCLESS_EVENTS_TABLE: ${{cf:socless-${{self:provider.stage}}.EventsTable}}
+  vpc:
+    securityGroupIds:
+      - ${{cf:socless-${{self:provider.stage}}.LambdaVpcSG}}
+    subnetIds:
+      - ${{cf:socless-${{self:provider.stage}}.PrivateFunctionSubnet}}
+  role: ${{cf:socless-${{self:provider.stage}}.LambdaExecutionRoleArn}}
+
+plugins:
+  - sls-apb 
+  - socless_integration_packager 
+
+package:
+  individually: true
+
+custom:
+  sls_apb:
+    logging: true
+  soclessPackager:
+    buildDir: build
+  core:
+    SetInvestigationStatus: ${{cf:socless-${{self:provider.stage}}.SetInvestigationStatus}}
+    MergeParallelOutput: ${{cf:socless-${{self:provider.stage}}.MergeParallelOutput}}
+    HTTPRequest: ${{cf:socless-${{self:provider.stage}}.HTTPRequest}}
+    AWSRequest: ${{cf:socless-${{self:provider.stage}}.AWSRequest}}
+
+  playbooks:
+    - socless_template_integration_test
+
+functions:
+  FunctionOne:
+    handler: lambda_function.lambda_handler
+    name: socless_template_function_one
+    description: Socless mock function
+    package:
+      include:
+        - functions/function_one
+  FunctionTwo:
+    handler: lambda_function.lambda_handler
+    name: socless_template_function_two
+    description: Socless mock function
+    package:
+      include:
+        - functions/function_two
+
+resources:
+  Resources:
+    SoclessTemplateIntegrationTestcase:
+      Type: "AWS::SSM::Parameter"
+      Properties:
+        Description:
+          Fn::Sub: "Input for ${{self:service}}'s integration test playbook"
+        Name: /socless/template/integration_test_input 
+        Type: String # test case is stored in plaintext in github, so not using a securestring here. Do not use secrets in the test case
+        Value: ${{file(playbooks/socless_template_integration_test/test_case_json.txt)}}
+
+  Outputs:
+    FunctionOne:
+      Description: Socless Template integration to mock what a real socless lambda would do
+      Value:
+        Fn::Sub: ${FunctionOneLambdaFunction.Arn}
+    FunctionTwo:
+      Description: Socless Template integration to mock what a real socless lambda would do
+      Value:
+        Fn::Sub: ${FunctionTwoLambdaFunction.Arn}

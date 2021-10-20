@@ -18,6 +18,10 @@ class RepoMetadata:
     org: str
     url: str = ""
 
+    def get_full_name(self) -> str:
+        """For use in pygithub's get_repo()"""
+        return f"{self.org}/{self.name}"
+
 
 @dataclass
 class FileExistence:
@@ -148,21 +152,13 @@ class SoclessFunction(BaseModel):
 
         parsed_docstring = docstring_parser.parse(docstring)
         self.description = parsed_docstring.short_description or ""
-        # print(parsed_docstring.long_description) # anything after the first sentence
+        # print(parsed_docstring.long_description)  # anything after the first sentence
 
         for param in parsed_docstring.params:
             for arg in self.arguments:
-                if arg.name == param.arg_name:
+                if arg.name == param.arg_name.strip():
                     arg.description = param.description
                     break  # only breaks inner `arg` loop
-
-        # print(parsed_docstring.meta)  # includes params & returns
-        ### return statement documentation:
-        # for ret in parsed_docstring.many_returns:
-        #     print(ret.args)
-        #     print(ret.description)
-        #     print(ret.return_name)
-        #     print(ret.type_name)
 
 
 class IntegrationMeta(BaseModel):
@@ -173,6 +169,26 @@ class IntegrationMeta(BaseModel):
 class IntegrationFamily(BaseModel):
     meta: IntegrationMeta = IntegrationMeta()
     functions: List[SoclessFunction] = []
+
+    def fill_missing_arg_descriptions(self):
+        """Fill missing arg descriptions by searching if any other function in this family has the same arg filled out."""
+        if not self.functions:
+            raise Exception(
+                "No functions to fill, run this after functions have been parsed."
+            )
+
+        # get all descriptions
+        description_map = {}
+        for fn in self.functions:
+            for arg in fn.arguments:
+                if arg.description:
+                    description_map[arg.name] = arg.description
+
+        # fill missing descriptions
+        for fn in self.functions:
+            for arg in fn.arguments:
+                if not arg.description and arg.name in description_map:
+                    arg.description = description_map[arg.name]
 
 
 class AllIntegrations(BaseModel):

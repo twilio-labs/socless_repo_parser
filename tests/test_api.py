@@ -1,20 +1,26 @@
-import pytest
+import pytest, json
 from socless_repo_parser.helpers import parse_repo_names
-from socless_repo_parser.models import build_integration_classes_from_json
-from socless_repo_parser.api import build_socless_info_from_cli
+from socless_repo_parser.models import (
+    build_integration_classes_from_json,
+)
+from socless_repo_parser.api import build_from_github
 
 
 #### NOTE: run with cmd `tox -- --github`
 @pytest.mark.github
 def test_output_structure(mock_socless_info_output_as_dict):
     mock_output = build_integration_classes_from_json(mock_socless_info_output_as_dict)
-    output = build_socless_info_from_cli(
-        "twilio-labs/socless, twilio-labs/socless-slack",
+    output = build_from_github(
+        "twilio-labs/socless",
         output_file_path="socless_info.json",
     )
 
-    assert output == mock_output
-    assert output.json()
+    # assert that it converts to json without error
+    output_as_json = output.json()
+    mock_output_as_json = mock_output.json()
+
+    # assert equality using dicts
+    assert json.loads(output_as_json) == json.loads(mock_output_as_json)
 
 
 def test_parse_repo_names():

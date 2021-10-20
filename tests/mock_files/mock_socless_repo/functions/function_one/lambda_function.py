@@ -17,12 +17,10 @@ def handle_state(
     **kwargs,
 ):
     """Test file for the python parser
+
     Args:
-        no_type_info_test : an argument description
-        # skipping arg description, part of test
-        str_test :
+        no_type_info_test (str) : an argument description
         list_test : an argument description
-        # test if comments break this
         dict_test : an argument description
         int_test : an argument description
         none_test: an argument description

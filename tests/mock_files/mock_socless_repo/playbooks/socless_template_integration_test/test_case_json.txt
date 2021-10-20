@@ -1,0 +1,14 @@
+{
+  "name": "Testing_socless_template",
+  "playbook": "SoclessTemplateIntegrationTest",
+  "dedup_keys": [],
+  "data_types": {},
+  "event_meta": {},
+  "details": [
+    {
+      "name" : "Hal Emmerich",
+      "message" : "This is a test of the emergency broadcast system.", 
+      "title" : "Dr"
+    }
+  ]
+}
