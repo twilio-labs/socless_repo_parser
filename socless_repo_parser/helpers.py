@@ -3,7 +3,7 @@ from getpass import getpass
 from urllib.parse import urlparse
 from typing import List, Union
 from github.MainClass import Github
-from socless_repo_parser.constants import GHE_DOMAIN, GHE_TOKEN
+from socless_repo_parser.constants import GH_TOKEN, GHE_DOMAIN, GHE_TOKEN
 from socless_repo_parser.models import RepoMetadata
 
 
@@ -16,13 +16,21 @@ class SoclessGithubWrapper:
         self.github: Union[Github, None] = None
         self.github_enterprise: Union[Github, None] = None
 
-    def get_or_init_github(self, token: str = "") -> Github:
+    def get_or_init_github(self, token: str = "", required=False) -> Github:
+        """If required=True, will prompt for user's PAT if none provided."""
         if not self.github:
             env_token = os.getenv("GH_TOKEN")
+
             if token:
                 self.github = Github(login_or_token=token)
             elif env_token:
                 self.github = Github(login_or_token=env_token)
+            elif required:
+                pat_token = token or get_secret(
+                    GH_TOKEN,
+                    "Personal Access Token authorized for Github.com",
+                )
+                self.github = Github(login_or_token=pat_token)
             else:
                 self.github = Github()
         return self.github

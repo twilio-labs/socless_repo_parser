@@ -11,3 +11,4 @@ INTERACTION_ARG_NAMES = ["receiver"]
 INTERNAL_ARG_NAMES = ["context", "receiver", "event_context"]
 GHE_DOMAIN = "GHE_DOMAIN"
 GHE_TOKEN = "GHE_TOKEN"
+GH_TOKEN = "GH_TOKEN"
