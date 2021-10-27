@@ -43,6 +43,10 @@ def test_parse_repo_names_missing_org():
 def test_public_api_exports():
     from socless_repo_parser.api import SoclessInfoBuilder
     from socless_repo_parser.api import Github
+    from socless_repo_parser.api import SoclessGithubWrapper
+    from socless_repo_parser.api import parse_repo_names  # noqa
+    from socless_repo_parser.api import get_github_domain  # noqatox
 
     _ = SoclessInfoBuilder()
     _ = Github()
+    _ = SoclessGithubWrapper()

@@ -3,11 +3,44 @@ from getpass import getpass
 from urllib.parse import urlparse
 from typing import List, Union
 from github.MainClass import Github
+from socless_repo_parser.constants import GHE_DOMAIN, GHE_TOKEN
 from socless_repo_parser.models import RepoMetadata
 
 
 class RepoParserError(Exception):
     pass
+
+
+class SoclessGithubWrapper:
+    def __init__(self) -> None:
+        self.github: Union[Github, None] = None
+        self.github_enterprise: Union[Github, None] = None
+
+    def get_or_init_github(self, token: str = "") -> Github:
+        if not self.github:
+            env_token = os.getenv("GH_TOKEN")
+            if token:
+                self.github = Github(login_or_token=token)
+            elif env_token:
+                self.github = Github(login_or_token=env_token)
+            else:
+                self.github = Github()
+        return self.github
+
+    def get_or_init_github_enterprise(
+        self, token: str = "", domain: str = ""
+    ) -> Github:
+        if self.github_enterprise is None:
+            ghe_domain = domain or get_secret(
+                GHE_DOMAIN, "Github Enterprise Domain (instead of github.com)"
+            )
+            base_url = f"https://{ghe_domain}/api/v3"
+            pat_token = token or get_secret(
+                GHE_TOKEN,
+                "Personal Access Token authorized for the github enterprise domain",
+            )
+            self.github_enterprise = Github(base_url=base_url, login_or_token=pat_token)
+        return self.github_enterprise
 
 
 def get_github_domain(gh: Github) -> str:

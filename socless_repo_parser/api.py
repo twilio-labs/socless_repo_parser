@@ -2,8 +2,14 @@ from typing import List, Union
 from socless_repo_parser.builders import SoclessInfoBuilder, validate_dir_path
 from socless_repo_parser.models import AllIntegrations
 
+
 # import this to re-export for dependencies & type-checking
 from github import Github  # noqa
+from socless_repo_parser.helpers import (  # noqa
+    SoclessGithubWrapper,  # noqa
+    parse_repo_names,  # noqa
+    get_github_domain,  # noqa
+)
 
 
 # deprecated, will be replaced by _from_github_cli
