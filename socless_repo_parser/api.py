@@ -9,6 +9,7 @@ from socless_repo_parser.helpers import (  # noqa
     SoclessGithubWrapper,  # noqa
     parse_repo_names,  # noqa
     get_github_domain,  # noqa
+    is_github_authenticated,  # noqa
 )
 
 
