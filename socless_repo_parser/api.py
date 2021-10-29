@@ -1,9 +1,10 @@
+"""Everything in this file is public API & will be re-exported directly under `socless_repo_parser`."""
 from typing import List, Union
 from socless_repo_parser.builders import SoclessInfoBuilder, validate_dir_path
-from socless_repo_parser.models import AllIntegrations
 
-
-# import this to re-export for dependencies & type-checking
+# import these to re-export for dependencies & type-checking
+from socless_repo_parser.models import AllIntegrations, RepoMetadata  # noqa
+from socless_repo_parser.constants import GH_TOKEN, GHE_DOMAIN, GHE_TOKEN  # noqa
 from github import Github  # noqa
 from socless_repo_parser.helpers import (  # noqa
     SoclessGithubWrapper,  # noqa
