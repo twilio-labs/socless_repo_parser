@@ -1,5 +1,3 @@
-# Archived - moved to https://github.com/twilio-labs/socless_repo_parser
-
 # socless_repo_parser
 Take a list of socless repo names and query the github api for their raw lambda .py files and serverless.yml, parsing key elements into a single json output to build a catalog of all available lambda functions in the ecosystem.
 
