@@ -18,12 +18,6 @@ MOCK_LAMBDA_WITH_NESTED_HANDLE_STATE = get_mock_file(
 
 def test_socless_lambda_file_parser():
     parsed = socless_lambda_file_parser(MOCK_LAMBDA_FILE)
-    # parsed = socless_lambda_file_parser(
-    #     get_mock_file("mock_socless_repo/functions/function_two/lambda_function.py")
-    # )
-
-    with open("test.json", "w") as f:
-        f.write(parsed.json())
 
     assert parsed.supports_kwargs
 
